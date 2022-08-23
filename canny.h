@@ -2,20 +2,20 @@
 #define _CANNY_
 #include "opencv2/imgproc/imgproc.hpp"
 #include "opencv2/highgui/highgui.hpp"
-#include <iostream>
-#include <cmath>
 
 using namespace std;
 using namespace cv;
 
-class Canny
+class canny
 {
+    public:
+        canny(String);
+        Mat gaussianBlur(Mat);
+        Mat sobel(Mat ); 
+
     private:
         Mat sourceImage;
-
-    public:
-        Canny(String);
-        Mat gaussianBlur(Mat);
+        Mat angles;
 
 };
 

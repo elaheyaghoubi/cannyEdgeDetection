@@ -1,23 +1,26 @@
-#include "Canny.h"
+#include "canny.h"
 
 
-Canny::Canny(String filename){
+canny::canny(String filename){
 
     sourceImage = imread(filename, 0);
 
     Mat grayscaled = sourceImage;
     Mat gFiltered = gaussianBlur(grayscaled);
+    Mat sFiltered = sobel(gFiltered);
 
     namedWindow("GrayScaled");
     namedWindow("Gaussian Blur");
+    namedWindow("Sobel Filtered");
 
     imshow("GrayScaled", grayscaled);
     imshow("Gaussian Blur", gaussianBlur(grayscaled));
+    imshow("Sobel Filtered", sobel(gFiltered));
 
     waitKey(0);
 }
 
-Mat Canny::gaussianBlur(Mat grayscaled)
+Mat canny::gaussianBlur(Mat grayscaled)
 {
     Mat Gaussiankernel = Mat(Size(3, 3), CV_8UC1);
 
@@ -63,4 +66,56 @@ Mat Canny::gaussianBlur(Mat grayscaled)
         }
     }
     return blurImage;
+}
+
+Mat canny::sobel(Mat gFiltered)
+{
+    int size = 1;
+
+    double xFilter[3][3] = {
+        -1.0, 0, 1.0,
+        -2.0, 0, 2.0,
+        -1.0, 0, 1.0,
+    };
+
+    double yFilter[3][3] = {
+        -1.0, -2.0, -1.0,
+        0, 0, 0,
+        1.0, 2.0, 1.0,
+    };
+
+    Mat filteredImg = Mat(gFiltered.rows, gFiltered.cols, CV_8UC1);
+    angles = Mat(gFiltered.rows, gFiltered.cols, CV_32FC1);
+
+    for (int i = size; i < gFiltered.rows; i++)
+    {
+        for (int j = size; j < gFiltered.cols; j++)
+        {
+            double sumx = 0;
+            double sumy = 0;
+
+            for (int x = 0; x < 3; x++)
+                for (int y = 0; y < 3; y++)
+                {
+                    sumx += xFilter[x][y] * gFiltered.at<uchar>(i + x, j + y);
+                    sumy += yFilter[x][y] * gFiltered.at<uchar>(i + x, j + y);
+                }
+
+            double sumxsq = sumx * sumx;
+            double sumysq = sumy * sumy;
+
+            double sq2 = sqrt(sumxsq + sumysq);
+
+            if (sq2 > 255)
+            {
+                sq2 = 255;
+            }
+
+            filteredImg.at<uchar>(i, j) = sq2;
+
+            angles.at<float>(i, j) = atan(sumy / sumx);
+        }
+    }
+
+    return filteredImg;
 }
