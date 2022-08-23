@@ -12,6 +12,8 @@ class canny
         canny(String);
         Mat gaussianBlur(Mat);
         Mat sobel(Mat ); 
+        Mat NonMaxSupp(Mat );
+
 
     private:
         Mat sourceImage;
