@@ -13,7 +13,7 @@ class canny
         Mat gaussianBlur(Mat);
         Mat sobel(Mat ); 
         Mat NonMaxSupp(Mat );
-
+        Mat Thresholding(Mat );
 
     private:
         Mat sourceImage;

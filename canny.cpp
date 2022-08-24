@@ -9,16 +9,19 @@ canny::canny(String filename){
     Mat gFiltered = gaussianBlur(grayscaled);
     Mat sFiltered = sobel(gFiltered);
     Mat non = NonMaxSupp(sFiltered);
+    Mat finalResult = Thresholding(non);
 
     namedWindow("GrayScaled");
     namedWindow("Gaussian Blur");
     namedWindow("Sobel Filtered");
     namedWindow("Edge Thining");
+    namedWindow("Threshold sourceImage");
 
     imshow("GrayScaled", grayscaled);
     imshow("Gaussian Blur", gaussianBlur(grayscaled));
     imshow("Sobel Filtered", sobel(gFiltered));
     imshow("Edge Thining", NonMaxSupp(sFiltered));
+    imshow("Threshold sourceImage", finalResult);
 
 
     waitKey(0);
@@ -168,4 +171,28 @@ Mat canny::NonMaxSupp(Mat sFiltered)
         }
     }
     return nonMaxSupped;
+}
+
+Mat canny::Thresholding(Mat non)
+{
+
+    Mat thres = non;
+
+    int threshold = 120;
+    for (int i = 0; i < non.rows; i++)
+    {
+        for (int j = 0; j < non.cols; j++)
+        {
+            if (thres.at<uchar>(i, j) > threshold)
+            {
+                thres.at<uchar>(i, j) = 255;
+            }
+            
+            else
+            {
+                thres.at<uchar>(i, j) = 0;
+            }
+        }
+    }
+    return thres;
 }
