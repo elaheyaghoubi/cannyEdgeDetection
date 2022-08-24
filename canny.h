@@ -18,6 +18,7 @@ class canny
     private:
         Mat sourceImage;
         Mat angles;
+     
 
 };
 
