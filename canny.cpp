@@ -1,7 +1,7 @@
 #include "canny.h"
 
-
-canny::canny(String filename){
+canny::canny(String filename)
+{
 
     sourceImage = imread(filename, 0);
 
@@ -31,7 +31,6 @@ Mat canny::gaussianBlur(Mat grayscaled)
     Mat Gaussiankernel = Mat(Size(3, 3), CV_8UC1);
 
     double sigma = 3;
-    double e = 2.7182818;
     int size = 3;
     double sum_g = 0;
 
@@ -126,7 +125,6 @@ Mat canny::sobel(Mat gFiltered)
     return filteredImg;
 }
 
-
 Mat canny::NonMaxSupp(Mat sFiltered)
 {
 
@@ -176,7 +174,7 @@ Mat canny::Thresholding(Mat non)
 {
     Mat thres = non;
 
-    int threshold = 70;
+    int threshold = 65;
     for (int i = 0; i < non.rows; i++)
     {
         for (int j = 0; j < non.cols; j++)
@@ -192,5 +190,7 @@ Mat canny::Thresholding(Mat non)
             }
         }
     }
+    imwrite("single threshold.png", thres);
+
     return thres;
 }
