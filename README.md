@@ -1,3 +1,3 @@
 # Canny Edge Detection
-#compile and run:
-"make"
+# Compile and run:
+Use "make" in terminal.
